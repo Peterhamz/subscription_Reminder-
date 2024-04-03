@@ -4,6 +4,8 @@ import com.structured.liceneseReminder.dto.SubDto;
 import com.structured.liceneseReminder.service.SubReminderService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class SubscriptionController {
+
+    @Autowired
     private SubReminderService subReminderService;
 
     //    Handler method to handle the list of sub request and return model and view
@@ -22,7 +27,6 @@ public class SubscriptionController {
         model.addAttribute("subscriptions", subReminderService.getAllSubscription());
         return "subscriptions";
     }
-
     @GetMapping("/sub/new")
     public String creatStudentForm(Model model){
     //      create sub object to hold sub form data
@@ -30,7 +34,6 @@ public class SubscriptionController {
         model.addAttribute("subReminder", subDto);
         return "createSubscription";
     }
-
     @PostMapping("/subscriptions")
     public String saveStudent(@ModelAttribute("subReminder") SubDto subDto){
         subReminderService.createReminder(subDto);
