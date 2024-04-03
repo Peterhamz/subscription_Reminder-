@@ -1,5 +1,6 @@
 package com.structured.liceneseReminder.dto;
 
+import com.structured.liceneseReminder.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class SubDto {
     private String description;
     private LocalDate expiryDate;
     private String email;
+    private Status status;
 }

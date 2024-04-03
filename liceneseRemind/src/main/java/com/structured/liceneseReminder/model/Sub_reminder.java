@@ -1,5 +1,6 @@
 package com.structured.liceneseReminder.model;
 
+import com.structured.liceneseReminder.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,13 +15,13 @@ import java.time.LocalDate;
 public class Sub_reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private String department;
     private String licensePermitName;
     private String description;
     private LocalDate expiryDate;
     private String email;
-
+    private Status status;
 
 }
