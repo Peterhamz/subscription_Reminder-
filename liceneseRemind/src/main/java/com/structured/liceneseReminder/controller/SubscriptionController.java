@@ -5,6 +5,7 @@ import com.structured.liceneseReminder.service.SubReminderService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class SubscriptionController {
         return "createSubscription";
     }
     @PostMapping("/subscriptions")
-    public String saveStudent(@ModelAttribute("subReminder") SubDto subDto){
+    public String saveStudent(@ModelAttribute("subReminder") SubDto subDto) throws SchedulerException, InterruptedException {
         subReminderService.createReminder(subDto);
         return "redirect:/subscriptions";
     }

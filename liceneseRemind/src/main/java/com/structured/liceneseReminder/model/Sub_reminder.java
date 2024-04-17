@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
 import java.time.LocalDate;
 @Data
 @AllArgsConstructor
@@ -23,5 +24,15 @@ public class Sub_reminder {
     private LocalDate expiryDate;
     private String email;
     private Status status;
+
+//    private Duration duration;
+//
+//    public Duration getDuration() {
+//        return Duration.ofMinutes(2);
+//    }
+//
+//    public void setDuration(Duration duration) {
+//        this.duration = duration;
+//    }
 
 }
