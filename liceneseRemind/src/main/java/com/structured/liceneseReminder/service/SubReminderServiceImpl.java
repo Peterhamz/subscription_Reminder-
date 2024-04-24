@@ -52,7 +52,7 @@ public class SubReminderServiceImpl implements SubReminderService {
         mailSenderService.sendEmail(emailDetails);
 
 
-        System.out.println("Scheduler finished");
+        //System.out.println("Scheduler finished");
 
         return subDto;
 

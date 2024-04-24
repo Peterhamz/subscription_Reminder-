@@ -33,7 +33,7 @@ public class SubscriptionController {
     //      create sub object to hold sub form data
         SubDto subDto = new SubDto();
         model.addAttribute("subReminder", subDto);
-        return "createSubscription";
+        return "createSub";
     }
     @PostMapping("/subscriptions")
     public String saveStudent(@ModelAttribute("subReminder") SubDto subDto) throws SchedulerException, InterruptedException {
