@@ -26,7 +26,7 @@ public class SubscriptionController {
     @GetMapping("/subscriptions")
     private String listStudent(Model model) {
         model.addAttribute("subscriptions", subReminderService.getAllSubscription());
-        return "subscriptions";
+        return "index";
     }
     @GetMapping("/sub/new")
     public String creatStudentForm(Model model){

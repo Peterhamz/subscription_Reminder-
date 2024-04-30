@@ -81,7 +81,7 @@ body {
     border:1px solid #79808F;
     border-radius:0.35rem;
     font: 600 12px Poppins, sans-serif;
-    padding: 0px, 32px, 0px, 32px;
+    padding: 0px 32px 0px 32px;
     margin-right:0.7rem;
 }
 .button-submit.submit{
@@ -97,4 +97,15 @@ body {
 }
 .button-submit.submit:hover {
     background-color: #ec6a0a;
+}
+.button-submit.cancel{
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
+.button-hold{
+    display: flex;
 }

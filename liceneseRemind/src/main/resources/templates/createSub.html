@@ -24,34 +24,64 @@
             Effortlessly manage company licenses with timely
             reminders for uninterrupted operations.
         </p>
-        <form>
+        <form th:action="@{/subscriptions}" th:object="${subReminder}" method="POST">
             <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <label for="name" >Name:</label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       th:field="*{name}"
+                       placeholder="Enter your name"
+                       required >
             </div>
             <div class="form-group">
                 <label for="department">Department:</label>
-                <input type="text" id="department" name="department" placeholder="Your Department" required>
+                <input type="text"
+                       id="department"
+                       name="department"
+                       th:field="*{department}"
+                       placeholder="Your Department"
+                       required >
             </div>
 
             <div class="form-group">
                 <label for="subscription-name">Subscription Name:</label>
-                <input type="text" id="subscription-name" name="subscription-name" placeholder="Enter subscription name" required>
+                <input type="text"
+                       id="subscription-name"
+                       name="subscription-name"
+                       th:field="*{licensePermitName}"
+                       placeholder="Enter subscription name"
+                       required >
             </div>
             <div class="form-group">
                 <label for="expiry-date">Expiry Date:</label>
-                <input type="date" id="expiry-date" name="expiry-date" required>
+                <input type="date"
+                       id="expiry-date"
+                       name="expiry-date"
+                       th:field="*{expiryDate}"
+                       required>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="1" placeholder="Enter description"></textarea>
+                <textarea id="description"
+                          name="description"
+                          th:field="*{description}"
+                          rows="1"
+                          placeholder="Enter description" ></textarea>
             </div>
             <div class="form-group">
                 <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                <input  type="email"
+                        id="email"
+                        name="email"
+                        th:field="*{email}"
+                        placeholder="Choose group email" required >
             </div>
-            <button class="button-submit" type="button">Cancel</button>
-            <button class="button-submit submit" type="submit">Save changes</button>
+            <div class="button-hold">
+                <a th:href="@{/subscriptions}" class="button-submit cancel" type="button">Cancel</a>
+                <button class="button-submit submit" type="submit">Save changes</button>
+            </div>
+
         </form>
     </div>
 </div>

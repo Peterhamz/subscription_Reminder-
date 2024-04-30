@@ -52,7 +52,7 @@ public class SubReminderServiceImpl implements SubReminderService {
         mailSenderService.sendEmail(emailDetails);
 
 
-        //System.out.println("Scheduler finished");
+        // System.out.println("Scheduler finished");
 
         return subDto;
 
@@ -119,7 +119,7 @@ public class SubReminderServiceImpl implements SubReminderService {
                         mailSenderService.sendEmail(emailDetails);
 
    // Edit the Status and save it to the Database.
-                        sub.setStatus(Status.INACTIVE);
+                        sub.setStatus(Status.OVERDUE);
                         subRepository.save(sub);
 
                     }
