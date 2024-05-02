@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,11 +25,14 @@ import java.util.List;
 @EnableScheduling
 public class SubReminderServiceImpl implements SubReminderService {
 
+
+
     @Autowired
     private SubRepository subRepository;
 
     @Autowired
     private MailSenderService mailSenderService;
+
 
     @Override
     public SubDto createReminder(SubDto subDto) throws SchedulerException, InterruptedException {
@@ -146,6 +152,8 @@ public class SubReminderServiceImpl implements SubReminderService {
         LocalDate today = LocalDate.now();
         return today.equals(expiryDate);
     }
+
+    // setup Scheduler
     @Scheduled(fixedRate = 2 * 60 * 1000, initialDelay = 1000)
    // @Scheduled(cron = "0 9 0 * * ?")
     private void scheduler(){
@@ -153,4 +161,25 @@ public class SubReminderServiceImpl implements SubReminderService {
      sendEmail();
     }
 
+    // Implementation for pagination
+    @Override
+    public Page<Sub_reminder> allPaginated(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
+        return this.subRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Sub_reminder> pendingPaginated(int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public Page<Sub_reminder> activePaginated(int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public Page<Sub_reminder> overduePaginated(int pageNumber, int pageSize) {
+        return null;
+    }
 }

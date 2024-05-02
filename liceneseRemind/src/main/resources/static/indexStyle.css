@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    font: 500 16px Poppins, Inter;
+    font: 400 14px Poppins, Inter;
     text-shadow: 0.3px 0.4px 0.4px rgba(0, 0, 0, 0.3);
     color: black;
     background-color: white;
@@ -16,8 +16,8 @@ button {
     display: flex;
     gap: 0.4rem;
     align-items: center;
-    margin-left:4px;
-    margin-left:0.5rem;
+    /*margin-left:4px;*/
+    /*margin-left:0.5rem;*/
 }
 .sidebar {
     min-height: 100vh;
@@ -160,15 +160,17 @@ nav .actions button {
     margin-top: 5%;
     display: flex;
     padding-right: 4rem;
+    text-decoration: none;
     justify-content: space-between;
     align-items: center;
-    /* border:solid orange 2px; */
+     /*border:solid orange 2px;*/
 }
 .tabs > div .tab {
     padding: 0.5rem 1rem;
     border: 0;
     border-radius: 6px;
     font-weight: 600;
+    text-decoration: none;
     background: #EDEBF2;
     color: #13123A;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
@@ -203,7 +205,7 @@ table {
     border-radius: 2rem;
     /*border: 1px solid #00000030;*/
     margin-top: 1rem;
-    padding: 2rem !important;
+    padding: 1rem;
     border-spacing: 0;
     width: 100%;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -214,7 +216,7 @@ table th {
 }
 table tr{
     padding:0 10rem 0 4rem;
-    font: 300 14px Poppins, sans-serif;
+    font: 250 12px Poppins, sans-serif;
 }
 table th,
 table td {
@@ -240,27 +242,53 @@ table td:nth-child(3) {
 }
 table th:nth-child(4),
 table td:nth-child(4) {
-    width: 15%;
+    width: 17%;
 }
 table th:nth-child(5),
 table td:nth-child(5) {
-    width: 12%;
+    width: 10%;
 }
 table th:nth-child(6),
 table td:nth-child(6) {
-    width: 18%;
+    width: 22%;
 }
 table th:nth-child(7),
 table td:nth-child(7) {
-    width: 14%;
+    width: 10%;
 }
 .paid-tag {
     border: 1px solid green;
-    padding: 0.5rem 0.2rem;
+    padding: 4px;
     border-radius: 20px;
+    font: 500 13px Poppins Inter;
     text-align: center;
     color: green;
-    margin-right:1.2rem;
+}
+.pending-tag {
+    border: 1px solid #F68633;
+    padding: 4px;
+    border-radius: 20px;
+    font: 500 13px Poppins Inter;
+    text-align: center;
+    color: #F68633;
+}
+
+.active-tag {
+    border: 1px solid #1E8842;
+    padding: 4px;
+    border-radius: 20px;
+    font: 500 13px Poppins Inter;
+    text-align: center;
+    color: #1E8842;
+}
+
+.overdue-tag {
+    border: 1px solid #FF4040;
+    padding: 5px;
+    border-radius: 20px;
+    font: 500 13px Poppins Inter;
+    text-align: center;
+    color: #FF4040;
 }
 .pagination-container {
     display: flex;
@@ -272,15 +300,14 @@ table td:nth-child(7) {
     border-radius: 4px;
     cursor: pointer;
 }
-.pagination-container .active:hover {
-    background-color: #F68633;
-    color:white;
-    padding:0.3rem;
-    border-radius:0.2rem;
+.link{
+    text-decoration: none;
+    /*color: #F68633;*/
+}
+.pagination-container .active.link:hover {
+    color:black;
 }
 .pagination-container .active:active {
-    background-color: #F68633;
-    color:white;
-    padding:0.3rem;
-    border-radius:0.2rem;
+    color:black;
+    border-bottom: black 2px solid;
 }
