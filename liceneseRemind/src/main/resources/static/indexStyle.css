@@ -256,14 +256,9 @@ table th:nth-child(7),
 table td:nth-child(7) {
     width: 10%;
 }
-.paid-tag {
-    border: 1px solid green;
-    padding: 4px;
-    border-radius: 20px;
-    font: 500 13px Poppins Inter;
-    text-align: center;
-    color: green;
-}
+/*.paid-tag {*/
+/*    text-decoration: none;*/
+/*}*/
 .pending-tag {
     border: 1px solid #F68633;
     padding: 4px;
@@ -271,6 +266,8 @@ table td:nth-child(7) {
     font: 500 13px Poppins Inter;
     text-align: center;
     color: #F68633;
+    text-decoration: none;
+    width: 100%;
 }
 
 .active-tag {
@@ -280,15 +277,20 @@ table td:nth-child(7) {
     font: 500 13px Poppins Inter;
     text-align: center;
     color: #1E8842;
+    text-decoration: none;
+    width: 100%;
 }
 
 .overdue-tag {
     border: 1px solid #FF4040;
+    background-color: #FF4040;
     padding: 5px;
     border-radius: 20px;
     font: 500 13px Poppins Inter;
     text-align: center;
-    color: #FF4040;
+    color: white;
+    text-decoration: none;
+    width: 100%;
 }
 .pagination-container {
     display: flex;

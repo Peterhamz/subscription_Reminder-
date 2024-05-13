@@ -38,26 +38,35 @@ public class SubscriptionController {
     //    Handler method to handle the list of sub request and return model and view
     @GetMapping("/subscriptions")
     private String listSub(Model model) {
-
         model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
-
+        model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
+        model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
     return allPaginated(1, model);
     }
 
     //get list of active subscription
     @GetMapping("/activeSub")
     private String activeSub(Model model) {
+        model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
+        model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
+        model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
         return activePaginated(1, model);
     }
 
     //get list of pending subscription
     @GetMapping("/pendingSub")
     private String pendingSub(Model model) {
+        model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
+        model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
+        model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
         return pendingPaginated(1, model);
     }
     //get overdue/expired subscription
     @GetMapping("/overdueSub")
     private String overdueSub(Model model) {
+        model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
+        model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
+        model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
         return overduePaginated(1, model);
     }
     @GetMapping("/sub/new")
@@ -72,18 +81,27 @@ public class SubscriptionController {
         subReminderService.createReminder(subDto);
         return "redirect:/subscriptions";
     }
-    @GetMapping("/page/{pageNumber}")
-    public String allPaginated(@PathVariable(value = "pageNumber") int pageNumber, Model model){
-        int pageSize = 5;
-
-        Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
-        Page<Sub_reminder> page = subRepository.getInfo(pageable);
+    private void extractedModels(@PathVariable("pageNumber") int pageNumber, Model model, Page<Sub_reminder> page) {
         List<Sub_reminder> listSubscription = page.getContent();
 
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("listSubscription", listSubscription);
+
+        model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
+        model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
+        model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public String allPaginated(@PathVariable(value = "pageNumber") int pageNumber, Model model){
+        int pageSize = 5;
+
+        Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
+        Page<Sub_reminder> page = subRepository.getInfo(pageable);
+        extractedModels(pageNumber, model, page);
+
 
         return "allPaginated_index";
     }
@@ -93,12 +111,7 @@ public class SubscriptionController {
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
         Page<Sub_reminder> page = subRepository.getActiveInfo(pageable);
-        List<Sub_reminder> listSubscription = page.getContent();
-
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listSubscription", listSubscription);
+        extractedModels(pageNumber, model, page);
 
         return "activePaginated_index";
     }
@@ -108,12 +121,7 @@ public class SubscriptionController {
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
         Page<Sub_reminder> page = subRepository.getPendingInfo(pageable);
-        List<Sub_reminder> listSubscription = page.getContent();
-
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listSubscription", listSubscription);
+        extractedModels(pageNumber, model, page);
 
         return "pendingPaginated_index";
     }
@@ -123,12 +131,7 @@ public class SubscriptionController {
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
         Page<Sub_reminder> page = subRepository.getExpiredInfo(pageable);
-        List<Sub_reminder> listSubscription = page.getContent();
-
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listSubscription", listSubscription);
+        extractedModels(pageNumber, model, page);
 
         return "overduePaginated_index";
     }

@@ -164,15 +164,15 @@
         <div class="metrics">
             <div class="metric">
                 <div class="label">PENDING</div>
-                <div class="count">7</div>
+                <div class="count">[[${pendingCount}]]</div>
             </div>
             <div class="metric">
                 <div class="label">ACTIVE</div>
-                <div class="count">18</div>
+                <div class="count">[[${activeCount}]]</div>
             </div>
             <div class="metric">
-                <div class="label">OVERDUE</div>
-                <div class="count">2</div>
+                <div class="label">EXPIRED</div>
+                <div class="count">[[${overdueCount}]]</div>
             </div>
         </div>
     </div>
@@ -182,7 +182,7 @@
         <div class="tab inside">
             <a th:href="@{/subscriptions}" class="tab active">All</a>
             <a th:href="@{/pendingSub}" class="tab">Pending</a>
-            <a th:href="@{/overdueSub}" class="tab">Overdue</a>
+            <a th:href="@{/overdueSub}" class="tab">Expired</a>
             <a th:href="@{/activeSub}" class="tab">Active</a>
         </div>
         <div>
@@ -230,9 +230,12 @@
             <td th:text="${sub.expiryDate}"></td>
             <td th:text="${sub.email}"></td>
             <td>
-                <div th:text="${sub.status.toString()}"
-                     th:class="${sub.status.toString() == 'PENDING' ? 'pending-tag' : (sub.status.toString() == 'ACTIVE' ? 'active-tag' : 'overdue-tag')}">
-                </div>
+                <a class="paid-tag" th:if="${sub.status.toString() != sub.status.ACTIVE.toString() || sub.status.toString() == sub.status.ACTIVE.toString()}"
+                   th:href="@{/sub/new}"
+                   th:text="${sub.status.toString()}"
+                   th:class="${sub.status.toString() == sub.status.PENDING.toString() ? 'pending-tag' : (sub.status.toString() == sub.status.ACTIVE.toString() ? 'active-tag' : 'overdue-tag')}"
+                   th:style="${sub.status.toString() == sub.status.ACTIVE.toString() ? 'pointer-events: none;' : ''}">
+                </a>
             </td>
         </tr>
     </table>

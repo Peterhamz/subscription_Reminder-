@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/liceneseRemind.iml" filepath="$PROJECT_DIR$/.idea/liceneseRemind.iml" />
+      <module fileurl="file://$PROJECT_DIR$/liceneseRemind/liceneseReminder.iml" filepath="$PROJECT_DIR$/liceneseRemind/liceneseReminder.iml" />
     </modules>
   </component>
 </project>
