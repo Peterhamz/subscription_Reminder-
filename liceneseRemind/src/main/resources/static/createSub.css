@@ -31,13 +31,13 @@ body {
 }
 .white-div h2{
     color: #f68633;
-    font: 600 20px Poppins, sans-serif;
+    font: 600 22px Poppins, sans-serif;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
     text-align:center;
 }
 .white-div p{
     text-align:center;
-    font: 400 18px Poppins, sans-serif;
+    font: 300 15px Poppins, sans-serif;
 
 }
 
@@ -120,4 +120,8 @@ body {
 }
 .button-hold{
     display: flex;
+}
+#updateDepartment{
+    opacity: 0.5;
+    cursor: not-allowed;
 }

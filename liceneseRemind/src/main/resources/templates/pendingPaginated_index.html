@@ -231,7 +231,7 @@
             <td th:text="${sub.email}"></td>
             <td>
                 <a class="paid-tag" th:if="${sub.status.toString() != sub.status.ACTIVE.toString() || sub.status.toString() == sub.status.ACTIVE.toString()}"
-                   th:href="@{/sub/new}"
+                   th:href="@{/sub/update/{id}(id=${sub.id})}"
                    th:text="${sub.status.toString()}"
                    th:class="${sub.status.toString() == sub.status.PENDING.toString() ? 'pending-tag' : (sub.status.toString() == sub.status.ACTIVE.toString() ? 'active-tag' : 'overdue-tag')}"
                    th:style="${sub.status.toString() == sub.status.ACTIVE.toString() ? 'pointer-events: none;' : ''}">

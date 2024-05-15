@@ -3,6 +3,7 @@ package com.structured.liceneseReminder.service;
 import com.structured.liceneseReminder.dto.MailSenderDto;
 import com.structured.liceneseReminder.dto.SubDto;
 import com.structured.liceneseReminder.enums.Status;
+import com.structured.liceneseReminder.exception.ResourceNotFoundException;
 import com.structured.liceneseReminder.model.Sub_reminder;
 import com.structured.liceneseReminder.reposotory.SubRepository;
 import lombok.AllArgsConstructor;
@@ -95,16 +96,77 @@ public class SubReminderServiceImpl implements SubReminderService {
     }
 
     @Override
+    public Sub_reminder getSubById(Long id) {
+      return subRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The subscription with id: " + id + " was not found!"));
+    }
+    @Override
+    public Sub_reminder updateSub(Long subId, Sub_reminder updateSubReminder) {
+
+        String department = updateSubReminder.getDepartment();
+
+        Sub_reminder subscription = subRepository.findById(subId)
+                .orElseThrow(() -> new ResourceNotFoundException("The subscription with id: " + subId + " was not found!"));
+
+        System.out.println("subscription before the update" + subscription.getExpiryDate() + subscription);
+
+
+        switch (department) {
+            case "IT": subscription.setDepartment("IT");
+                updateSubReminder.setEmail("itsupport@structuredresource.com");
+                break;
+            case "STRATEGY & OPERATIONS": subscription.setDepartment("STRATEGY & OPERATIONS");
+                updateSubReminder.setEmail("strategyandoperationsdesk@structuredresource.com");
+                break;
+            case "HR & ADMIN": subscription.setDepartment("HR & ADMIN");
+                updateSubReminder.setEmail("hr@structuredresource.com");
+                break;
+            case "SUPPLY CHAIN": subscription.setDepartment("SUPPLY CHAIN");
+                updateSubReminder.setEmail("procurement@structuredresource.com");
+                break;
+            case "TECHNICAL": subscription.setDepartment("TECHNICAL");
+                updateSubReminder.setEmail("support@structuredresource.com");
+                break;
+            case "FINANCE": subscription.setDepartment("FINANCE");
+                updateSubReminder.setEmail("finadmin@structuredresource.com");
+                break;
+            case "BUSINESS DEVELOPMENT": subscription.setDepartment("BUSINESS DEVELOPMENT");
+                updateSubReminder.setEmail("salesadmin@structuredresource.com");
+                break;
+            default: subscription.setDepartment("IT");
+                updateSubReminder.setEmail("itsupport@structuredresource.com");
+                break;
+        }
+       subscription.setName(updateSubReminder.getName());
+       subscription.setEmail(updateSubReminder.getEmail());
+       subscription.setStatus(Status.ACTIVE);
+       subscription.setDescription(updateSubReminder.getDescription());
+       subscription.setExpiryDate(updateSubReminder.getExpiryDate());
+       subscription.setLicensePermitName(updateSubReminder.getLicensePermitName());
+
+
+       subRepository.save(subscription);
+
+        System.out.println("this is the updated subscription " + subscription);
+        return subscription;
+    }
+
+    @Override
     public void sendEmail() {
  // Get all the Subscription from the Database and check for expiry date
         subRepository.findAll()
                 .forEach(sub -> {
                     LocalDate expiryDate = sub.getExpiryDate();
                     LocalDate today = LocalDate.now();
+                   // LocalDate notYetExpired = today.plusDays(31);
                     if (expiryDate.isBefore(today)){
                         sub.setStatus(Status.EXPIRED);
                         subRepository.save(sub);
                     }
+//                    if(expiryDate.isAfter(notYetExpired)){
+//                        sub.setStatus(Status.ACTIVE);
+//                        subRepository.save(sub);
+//                    }
                     if(isExpiringIn30Days(expiryDate)){
                         System.out.println(sub.getLicensePermitName() +
                                 " --> Date reached for 30days");
@@ -160,6 +222,7 @@ public class SubReminderServiceImpl implements SubReminderService {
                     }
                 });
     }
+
 
     // Checking to see if the expiry date is within 30 days
     private boolean isExpiringIn30Days(LocalDate expiryDate){

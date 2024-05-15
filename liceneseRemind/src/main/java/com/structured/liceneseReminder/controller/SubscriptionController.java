@@ -69,9 +69,23 @@ public class SubscriptionController {
         model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
         return overduePaginated(1, model);
     }
+
+    @GetMapping("/sub/update/{id}")
+    public String updateSubscriptionForm(@PathVariable Long id, Model model){
+        //      create sub object to hold sub form data
+        model.addAttribute("update", subReminderService.getSubById(id));
+        return "updateSub";
+    }
+    @PostMapping("/subscriptions/{id}")
+    public String updateSub(@PathVariable Long id,
+                            @ModelAttribute("update") Sub_reminder sub_reminder) throws SchedulerException, InterruptedException {
+        subReminderService.updateSub(id,sub_reminder);
+        return "redirect:/subscriptions";
+    }
+
     @GetMapping("/sub/new")
     public String createSubForm(Model model){
-    //      create sub object to hold sub form data
+        //      create sub object to hold sub form data
         SubDto subDto = new SubDto();
         model.addAttribute("subReminder", subDto);
         return "createSub";

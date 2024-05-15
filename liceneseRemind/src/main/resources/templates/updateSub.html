@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Password_reset</title>
+  <title>Update Subscription</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
   <!--
@@ -13,18 +13,19 @@
 <!--          rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"-->
 <!--          crossorigin="anonymous">-->
 
+
   <link rel="stylesheet" href="/createSub.css" />
   <script type="module" src="script.js"></script>
 </head>
 <body>
 <div class="orange-div">
   <div class="white-div">
-    <h2>Add New Subscription</h2>
+    <h2>Update Subscription</h2>
     <p>
       Effortlessly manage company licenses with timely
       reminders for uninterrupted operations.
     </p>
-    <form th:action="@{/subscriptions}" th:object="${subReminder}" method="POST">
+    <form th:action="@{/subscriptions/{id} (id=${update.id})}" th:object="${update}" method="POST">
       <div class="form-group">
         <label for="name" >Name:</label>
         <input type="text"
@@ -32,16 +33,17 @@
                name="name"
                th:field="*{name}"
                placeholder="Enter your name"
-               required >
+               required readonly>
       </div>
       <div class="form-group">
-        <label for="department">Department:</label>
+        <label for="updateDepartment">Department:</label>
         <select
                 type="text"
-                id="department"
+                id="updateDepartment"
                 name="department"
                 th:field="*{department}"
                 placeholder="Your Department"
+                class="cursor-deselect"
                 required >
           <option value="">Select your Department...</option>
           <option value="IT">IT</option>
@@ -54,6 +56,17 @@
         </select>
       </div>
 
+      <script>
+        // Disable keyboard input for select element
+        document.getElementById("updateDepartment").addEventListener("keydown", function(event) {
+          event.preventDefault();
+        });
+
+        // Disable mouse interaction for select element
+        document.getElementById("updateDepartment").addEventListener("mousedown", function(event) {
+          event.preventDefault();
+        });
+      </script>
       <div class="form-group">
         <label for="subscription-name">Subscription Name:</label>
         <input type="text"
@@ -61,7 +74,7 @@
                name="subscription-name"
                th:field="*{licensePermitName}"
                placeholder="Enter subscription name"
-               required >
+               required readonly>
       </div>
       <div class="form-group">
         <label for="expiry-date">Expiry Date:</label>

@@ -292,6 +292,18 @@ table td:nth-child(7) {
     text-decoration: none;
     width: 100%;
 }
+.overdue-tag:hover {
+    border: 1px solid #b60000;
+    background-color: #b60000;
+}
+.active-tag:hover {
+    color: #135429;
+    border: 1px solid #135429;
+}
+.pending-tag:hover {
+    border: 1px solid #bf5608;
+    color: #bf5608;
+}
 .pagination-container {
     display: flex;
     justify-content: right;

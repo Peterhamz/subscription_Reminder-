@@ -11,6 +11,10 @@ public interface SubReminderService {
     SubDto createReminder(SubDto subDto) throws SchedulerException, InterruptedException;
     List<Sub_reminder> getAllSubscription();
     void sendEmail();
+
+    Sub_reminder getSubById(Long id);
+    Sub_reminder updateSub(Long subId, Sub_reminder subReminder);
+
     Page<Sub_reminder> allPaginated(int pageNumber, int pageSize);
 
     Page<Sub_reminder> pendingPaginated(int pageNumber, int pageSize);
