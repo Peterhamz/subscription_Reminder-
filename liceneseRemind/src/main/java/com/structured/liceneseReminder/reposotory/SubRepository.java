@@ -15,13 +15,13 @@ public interface SubRepository extends JpaRepository<Sub_reminder,Long> {
     @Query(value = "select  * from Sub_reminder",nativeQuery = true)
     Page<Sub_reminder>getInfo(Pageable pageable);
 
-    @Query(value = "SELECT * FROM reminderdb.sub_reminder where status = '0'",nativeQuery = true)
+    @Query(value = "SELECT * FROM sub_reminder where status = '0'",nativeQuery = true)
     Page<Sub_reminder>getActiveInfo(Pageable pageable);
 
-    @Query(value = "SELECT * FROM reminderdb.sub_reminder where status = '1'",nativeQuery = true)
+    @Query(value = "SELECT * FROM sub_reminder where status = '1'",nativeQuery = true)
     Page<Sub_reminder>getPendingInfo(Pageable pageable);
 
-    @Query(value = "SELECT * FROM reminderdb.sub_reminder where status = '2'",nativeQuery = true)
+    @Query(value = "SELECT * FROM sub_reminder where status = '2'",nativeQuery = true)
     Page<Sub_reminder>getExpiredInfo(Pageable pageable);
 
    // List<Sub_reminder> findAllByStatus(String status);

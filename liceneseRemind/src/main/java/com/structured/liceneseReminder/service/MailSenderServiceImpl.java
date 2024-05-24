@@ -26,14 +26,18 @@ public class MailSenderServiceImpl implements MailSenderService{
     private String senderEmail;
     @Override
     public void sendEmail(MailSenderDto emailDetails) {
+
+        if (emailDetails.getRecipient() == null || emailDetails.getRecipient().isEmpty()) {
+            throw new IllegalArgumentException("Recipient email address is null or empty");
+        }
         try {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setFrom(senderEmail);
             simpleMailMessage.setTo(emailDetails.getRecipient());
             simpleMailMessage.setSubject(emailDetails.getSubject());
             simpleMailMessage.setText(emailDetails.getMessageBody());
-
-           // javaMailSender.send(simpleMailMessage);
+            System.out.println(emailDetails.getRecipient());
+            javaMailSender.send(simpleMailMessage);
             System.out.println("Mail sent successfully");
         } catch (Exception e) {
             throw new RuntimeException(e);

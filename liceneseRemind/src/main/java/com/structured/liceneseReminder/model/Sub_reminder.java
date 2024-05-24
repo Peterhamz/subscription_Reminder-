@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDate;
 @Data
 @AllArgsConstructor
@@ -17,13 +16,15 @@ import java.time.LocalDate;
 public class Sub_reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "sub_id")
+    private Long subId;
     @NotNull(message = "Name field is required...")
     private String name; // required by the user
-    private String department; // should be automated
     private String licensePermitName; //required by the user
     private String description; // optional
     private LocalDate expiryDate; //drop down
-    private String email; // drop down
     private Status status; //should be automated
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_user_id")
+    private User user;
 }
