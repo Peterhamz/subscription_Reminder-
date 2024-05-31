@@ -16,7 +16,7 @@
 <body>
 
 <div class="sidebar">
-    <a th:href="@{/subscriptions}"> <div href="/" class="logo">
+    <a th:href="@{/subscriptionsPage}"> <div href="/" class="logo">
         <svg
                 width="100%"
                 height="35"
@@ -55,7 +55,7 @@
     </div> </a>
     <ul class="actions">
         <li>
-            <a th:href="@{/subscriptions}" class="active">
+            <a th:href="@{/subscriptionsPage}" class="active">
                 <svg
                         width="24"
                         height="24"
@@ -180,7 +180,7 @@
     <!-- TABS -->
     <div class="tabs">
         <div class="tab inside">
-            <a th:href="@{/subscriptions}" class="tab active">All</a>
+            <a th:href="@{/subscriptionsPage}" class="tab active">All</a>
             <a th:href="@{/pendingSub}" class="tab">Pending</a>
             <a th:href="@{/overdueSub}" class="tab">Expired</a>
             <a th:href="@{/activeSub}" class="tab">Active</a>
@@ -224,14 +224,14 @@
                     <span th:text="${sub.licensePermitName}"></span>
                 </div>
             </td>
-            <td th:text="${sub.department}"></td>
+            <td th:text="${sub.department.department}"></td>
             <td th:text="${sub.name}"></td>
             <td th:text="${sub.description}"></td>
             <td th:text="${sub.expiryDate}"></td>
-            <td th:text="${sub.email}"></td>
+            <td th:text="${sub.department.email}"></td>
             <td>
                 <a class="paid-tag" th:if="${sub.status.toString() != sub.status.ACTIVE.toString() || sub.status.toString() == sub.status.ACTIVE.toString()}"
-                            th:href="@{/sub/update/{id}(id=${sub.getSubId})}"
+                            th:href="@{/sub/update/{id}(id=${sub.getId()})}"
                             th:text="${sub.status.toString()}"
                             th:class="${sub.status.toString() == sub.status.PENDING.toString() ? 'pending-tag' : (sub.status.toString() == sub.status.ACTIVE.toString() ? 'active-tag' : 'overdue-tag')}"
                             th:style="${sub.status.toString() == sub.status.ACTIVE.toString() ? 'pointer-events: none;' : ''}">

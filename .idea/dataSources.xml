@@ -8,7 +8,7 @@
       <jdbc-url>jdbc:mysql://localhost:3306/reminderDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@localhost" uuid="87edf7a7-672f-4377-9111-ccc3300c93f4">
+    <data-source source="LOCAL" name="postgres@localhost" uuid="bcf0ab46-b189-4329-80d8-78dbe898c6de">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

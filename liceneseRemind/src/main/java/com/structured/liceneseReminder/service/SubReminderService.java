@@ -2,7 +2,8 @@ package com.structured.liceneseReminder.service;
 
 import com.structured.liceneseReminder.dto.SubDto;
 import com.structured.liceneseReminder.dto.UserDto;
-import com.structured.liceneseReminder.model.Sub_reminder;
+import com.structured.liceneseReminder.model.Department;
+import com.structured.liceneseReminder.model.SubReminder;
 import org.quartz.SchedulerException;
 import org.springframework.data.domain.Page;
 
@@ -10,18 +11,19 @@ import java.util.List;
 
 public interface SubReminderService {
     SubDto createReminder(SubDto subDto) throws SchedulerException, InterruptedException;
-    List<Sub_reminder> getAllSubscription();
+    List<SubReminder> getAllSubscription();
     void sendEmail();
 
-    Sub_reminder getSubById(Long id);
-    Sub_reminder updateSub(Long subId, Sub_reminder subReminder);
+    SubReminder getSubById(Long id);
+    SubReminder updateSub(Long subId, SubDto subDto);
     UserDto createUser(UserDto userDto);
 
-    Page<Sub_reminder> allPaginated(int pageNumber, int pageSize);
+    List<Department> getAllDepartment();
+    Page<SubReminder> allPaginated(int pageNumber, int pageSize);
 
-    Page<Sub_reminder> pendingPaginated(int pageNumber, int pageSize);
+    Page<SubReminder> pendingPaginated(int pageNumber, int pageSize);
 
-    Page<Sub_reminder> activePaginated(int pageNumber, int pageSize);
+    Page<SubReminder> activePaginated(int pageNumber, int pageSize);
 
-    Page<Sub_reminder> overduePaginated(int pageNumber, int pageSize);
+    Page<SubReminder> overduePaginated(int pageNumber, int pageSize);
 }

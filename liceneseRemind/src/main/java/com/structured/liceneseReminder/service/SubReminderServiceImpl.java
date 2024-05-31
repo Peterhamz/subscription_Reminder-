@@ -5,10 +5,11 @@ import com.structured.liceneseReminder.dto.SubDto;
 import com.structured.liceneseReminder.dto.UserDto;
 import com.structured.liceneseReminder.enums.Status;
 import com.structured.liceneseReminder.exception.ResourceNotFoundException;
-import com.structured.liceneseReminder.model.Sub_reminder;
-import com.structured.liceneseReminder.model.User;
-import com.structured.liceneseReminder.reposotory.SubRepository;
-import com.structured.liceneseReminder.reposotory.UserRepository;
+import com.structured.liceneseReminder.model.Department;
+import com.structured.liceneseReminder.model.SubReminder;
+import com.structured.liceneseReminder.repository.SubRepository;
+import com.structured.liceneseReminder.repository.DepartmentRepository;
+import com.structured.liceneseReminder.response.SubResponse;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.quartz.SchedulerException;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -32,140 +34,96 @@ public class SubReminderServiceImpl implements SubReminderService {
     @Autowired
     private SubRepository subRepository;
     @Autowired
-    private UserRepository userRepository;
-
+    private DepartmentRepository departmentRepository;
     @Autowired
     private MailSenderService mailSenderService;
 
     @Override
     public SubDto createReminder(SubDto subDto) throws SchedulerException, InterruptedException {
 
-   //     String department = subDto.getDepartment();
+        SubReminder subReminder = new SubReminder();
 
-        Sub_reminder subReminder = new Sub_reminder();
+        Optional<Department> getDepartment= departmentRepository.getDepartmentById(subDto.getDepartmentID());
 
-//        switch (department) {
-//            case "IT": subDto.setDepartment("IT");
-//                subReminder.setUser.("peterhamza6@gmail.com");
-//                break;
-//            case "STRATEGY & OPERATIONS": subDto.setDepartment("STRATEGY & OPERATIONS");
-//                subReminder.setEmail("strategyandoperationsdesk@structuredresource.com");
-//                break;
-//            case "HR & ADMIN": subDto.setDepartment("HR & ADMIN");
-//                subReminder.setEmail("hr@structuredresource.com");
-//                break;
-//            case "SUPPLY CHAIN": subDto.setDepartment("SUPPLY CHAIN");
-//                subReminder.setEmail("procurement@structuredresource.com");
-//                break;
-//            case "TECHNICAL": subDto.setDepartment("TECHNICAL");
-//                subReminder.setEmail("support@structuredresource.com");
-//                break;
-//            case "FINANCE": subDto.setDepartment("FINANCE");
-//                subReminder.setEmail("finadmin@structuredresource.com");
-//                break;
-//            case "BUSINESS DEVELOPMENT": subDto.setDepartment("BUSINESS DEVELOPMENT");
-//                subReminder.setEmail("salesadmin@structuredresource.com");
-//                break;
-//            default: subDto.setDepartment("IT");
-//                subReminder.setEmail("peterhamza6@gmail.com");
-//                break;
-//        }
-        subDto.getDepartment();
-        subReminder.setName(subDto.getName());
-        subReminder.setLicensePermitName(subDto.getLicensePermitName());
-        subReminder.setDescription(subDto.getDescription());
-        subReminder.setExpiryDate(subDto.getExpiryDate());
-        subReminder.setDepartment(subDto.getDepartment());
-        subReminder.setStatus(Status.ACTIVE);
+        if (getDepartment.isPresent()){
 
-        subRepository.save(subReminder);
+            subReminder.setName(subDto.getName());
+            subReminder.setLicensePermitName(subDto.getLicensePermitName());
+            subReminder.setDescription(subDto.getDescription());
+            subReminder.setExpiryDate(subDto.getExpiryDate());
+            subReminder.setDepartment(getDepartment.get());
+            subReminder.setStatus(Status.ACTIVE);
 
-        MailSenderDto emailDetails = MailSenderDto.builder()
-                .recipient(subReminder.getEmail())
-                .subject("Subscription Licence Reminder")
-                .messageBody("Congratulations your Subscription Licence for " + subDto.getLicensePermitName() + "\n" +
-                        " Has been added \n" + " The expiry date is " + subDto.getExpiryDate())
-                .build();
-        mailSenderService.sendEmail(emailDetails);
+            System.out.println(getDepartment.get().toString());
+            subRepository.save(subReminder);
 
+            MailSenderDto emailDetails = MailSenderDto.builder()
+                    .recipient(getDepartment.get().getEmail())
+                    .subject("Subscription Licence Reminder")
+                    .messageBody("Congratulations your Subscription Licence for " + subDto.getLicensePermitName() + "\n" +
+                            " Has been added \n" + " The expiry date is " + subDto.getExpiryDate())
+                    .build();
+            mailSenderService.sendEmail(emailDetails);
 
-        // System.out.println("Scheduler finished");
+            SubResponse response = new SubResponse();
+            response.setDepartment(getDepartment.get().getDepartment());
+            response.setInformation(subDto.getLicensePermitName());
+            return subDto;
 
+        }
         return subDto;
-
     }
 
     @Override
-    public List<Sub_reminder> getAllSubscription() {
+    public List<SubReminder> getAllSubscription() {
         return subRepository.findAll();
     }
 
     @Override
-    public Sub_reminder getSubById(Long id) {
+    public SubReminder getSubById(Long id) {
       return subRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("The subscription with id: " + id + " was not found!"));
     }
     @Override
-    public Sub_reminder updateSub(Long subId, Sub_reminder updateSubReminder) {
+    public SubReminder updateSub(Long subId, SubDto updateSubReminder) {
 
-        String department = updateSubReminder.getDepartment();
-
-        Sub_reminder subscription = subRepository.findById(subId)
+        SubReminder subscription = subRepository.findById(subId)
                 .orElseThrow(() -> new ResourceNotFoundException("The subscription with id: " + subId + " was not found!"));
 
-      //  System.out.println("subscription before the update" + subscription.getExpiryDate() + subscription);
+        Optional<Department> getDepartment= departmentRepository.getDepartmentById(subscription.getDepartment().getId());
 
+        if (getDepartment.isPresent()) {
 
-        switch (department) {
-            case "IT": subscription.setDepartment("IT");
-                updateSubReminder.setEmail("itsupport@structuredresource.com");
-                break;
-            case "STRATEGY & OPERATIONS": subscription.setDepartment("STRATEGY & OPERATIONS");
-                updateSubReminder.setEmail("strategyandoperationsdesk@structuredresource.com");
-                break;
-            case "HR & ADMIN": subscription.setDepartment("HR & ADMIN");
-                updateSubReminder.setEmail("hr@structuredresource.com");
-                break;
-            case "SUPPLY CHAIN": subscription.setDepartment("SUPPLY CHAIN");
-                updateSubReminder.setEmail("procurement@structuredresource.com");
-                break;
-            case "TECHNICAL": subscription.setDepartment("TECHNICAL");
-                updateSubReminder.setEmail("support@structuredresource.com");
-                break;
-            case "FINANCE": subscription.setDepartment("FINANCE");
-                updateSubReminder.setEmail("finadmin@structuredresource.com");
-                break;
-            case "BUSINESS DEVELOPMENT": subscription.setDepartment("BUSINESS DEVELOPMENT");
-                updateSubReminder.setEmail("salesadmin@structuredresource.com");
-                break;
-            default: subscription.setDepartment("IT");
-                updateSubReminder.setEmail("itsupport@structuredresource.com");
-                break;
+            subscription.setName(updateSubReminder.getName());
+            subscription.setDepartment(getDepartment.get());
+            subscription.setStatus(Status.ACTIVE);
+            subscription.setDescription(updateSubReminder.getDescription());
+            subscription.setExpiryDate(updateSubReminder.getExpiryDate());
+            subscription.setLicensePermitName(updateSubReminder.getLicensePermitName());
+
+            subRepository.save(subscription);
+
+            System.out.println("this is the updated subscription " + subscription);
+            return subscription;
         }
-       subscription.setName(updateSubReminder.getName());
-       subscription.setEmail(updateSubReminder.getEmail());
-       subscription.setStatus(Status.ACTIVE);
-       subscription.setDescription(updateSubReminder.getDescription());
-       subscription.setExpiryDate(updateSubReminder.getExpiryDate());
-       subscription.setLicensePermitName(updateSubReminder.getLicensePermitName());
-
-
-       subRepository.save(subscription);
-
- //       System.out.println("this is the updated subscription " + subscription);
+        System.out.println("This Update can not be done at the moment");
         return subscription;
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        User user = new User();
+        Department department = new Department();
 
-        user.setEmail(user.getEmail());
-        user.setDepartment(userDto.getDepartment());
-
-        userRepository.save(user);
-
+        department.setEmail(userDto.getEmail());
+        department.setDepartment(userDto.getDepartment());
+        departmentRepository.save(department);
+        System.out.println(department.getEmail() + department.getDepartment());
         return userDto;
+    }
+
+    @Override
+    public List<Department> getAllDepartment() {
+        return departmentRepository.findAll();
     }
 
     @Override
@@ -224,7 +182,7 @@ public class SubReminderServiceImpl implements SubReminderService {
                                 " --> Date reached for Expiry");
    // Send Email to the Sub that met the requirement
                         MailSenderDto emailDetails = MailSenderDto.builder()
-                                .recipient(sub.getEmail())
+                                .recipient(sub.getDepartment().getEmail())
                                 .subject("Subscription Licence Reminder")
                                 .messageBody("Your Subscription Licence for " + sub.getLicensePermitName() + "\n" +
                                         " Will expire Today \n" + sub.getExpiryDate() + "PLease Renew and " +
@@ -242,7 +200,7 @@ public class SubReminderServiceImpl implements SubReminderService {
 
    // Send Email to the Sub that met the requirement
                         MailSenderDto emailDetails = MailSenderDto.builder()
-                                .recipient(sub.getEmail())
+                                .recipient(sub.getDepartment().getEmail())
                                 .subject("Subscription Licence Reminder")
                                 .messageBody("Your Subscription Licence for " + sub.getLicensePermitName() + "\n" +
                                         " Will expire on this day \n" + sub.getExpiryDate())
@@ -292,22 +250,22 @@ public class SubReminderServiceImpl implements SubReminderService {
     }
     // Implementation for pagination
     @Override
-    public Page<Sub_reminder> allPaginated(int pageNumber, int pageSize) {
+    public Page<SubReminder> allPaginated(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
         return this.subRepository.findAll(pageable);
     }
 
     @Override
-    public Page<Sub_reminder> pendingPaginated(int pageNumber, int pageSize) {
+    public Page<SubReminder> pendingPaginated(int pageNumber, int pageSize) {
         return null;
     }
     @Override
-    public Page<Sub_reminder> activePaginated(int pageNumber, int pageSize) {
+    public Page<SubReminder> activePaginated(int pageNumber, int pageSize) {
         return null;
     }
 
     @Override
-    public Page<Sub_reminder> overduePaginated(int pageNumber, int pageSize) {
+    public Page<SubReminder> overduePaginated(int pageNumber, int pageSize) {
         return null;
     }
 

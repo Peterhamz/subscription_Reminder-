@@ -37,7 +37,7 @@ public class MailSenderServiceImpl implements MailSenderService{
             simpleMailMessage.setSubject(emailDetails.getSubject());
             simpleMailMessage.setText(emailDetails.getMessageBody());
             System.out.println(emailDetails.getRecipient());
-            javaMailSender.send(simpleMailMessage);
+//            javaMailSender.send(simpleMailMessage);
             System.out.println("Mail sent successfully");
         } catch (Exception e) {
             throw new RuntimeException(e);

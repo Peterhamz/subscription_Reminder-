@@ -40,17 +40,13 @@
                         type="text"
                         id="department"
                         name="department"
-                        th:field="*{department}"
+                        th:field="*{departmentID}"
                         placeholder="Your Department"
                         required >
                     <option value="">Select your Department...</option>
-                    <option value="IT">IT</option>
-                    <option value="STRATEGY & OPERATIONS">Strategy & Operations</option>
-                    <option value="HR & ADMIN">HR & Admin</option>
-                    <option value="SUPPLY CHAIN">Supply Chain</option>
-                    <option value="TECHNICAL">Technical</option>
-                    <option value="FINANCE">Finance</option>
-                    <option value="BUSINESS DEVELOPMENT">Business Development</option>
+                    <option th:each="department : ${departments}"
+                            th:value="${department.getId()}"
+                            th:text="${department.getDepartment}"></option>
                 </select>
             </div>
 

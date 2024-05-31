@@ -1,9 +1,11 @@
 package com.structured.liceneseReminder.controller;
 
 import com.structured.liceneseReminder.dto.SubDto;
+import com.structured.liceneseReminder.dto.UserDto;
 import com.structured.liceneseReminder.enums.Status;
-import com.structured.liceneseReminder.model.Sub_reminder;
-import com.structured.liceneseReminder.reposotory.SubRepository;
+import com.structured.liceneseReminder.model.Department;
+import com.structured.liceneseReminder.model.SubReminder;
+import com.structured.liceneseReminder.repository.SubRepository;
 import com.structured.liceneseReminder.service.SubReminderService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +35,7 @@ public class SubscriptionController {
     int pageSize;
 
     //    Handler method to handle the list of sub request and return model and view
-    @GetMapping("/subscriptions")
+    @GetMapping("/subscriptionsPage")
     private String listSub(Model model) {
         model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
         model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
@@ -70,30 +72,52 @@ public class SubscriptionController {
     @GetMapping("/sub/update/{id}")
     public String updateSubscriptionForm(@PathVariable Long id, Model model){
         //      create sub object to hold sub form data
+        List<Department> departments = subReminderService.getAllDepartment();
+        SubDto subDto = new SubDto();
+        model.addAttribute("subReminder", subDto);
+        model.addAttribute("departments", departments);
         model.addAttribute("update", subReminderService.getSubById(id));
         return "updateSub";
     }
     @PostMapping("/subscriptions/{id}")
     public String updateSub(@PathVariable Long id,
-                            @ModelAttribute("update") Sub_reminder sub_reminder) throws SchedulerException, InterruptedException {
-        subReminderService.updateSub(id,sub_reminder);
-        return "redirect:/subscriptions";
+                            @ModelAttribute("update") SubDto subDto, Model model) throws SchedulerException, InterruptedException {
+        List<Department> departments = subReminderService.getAllDepartment();
+        model.addAttribute("departments", departments);
+        subReminderService.updateSub(id,subDto);
+        return "redirect:/subscriptionsPage";
     }
 
     @GetMapping("/sub/new")
     public String createSubForm(Model model){
         //      create sub object to hold sub form data
+        List<Department> departments = subReminderService.getAllDepartment();
         SubDto subDto = new SubDto();
+        model.addAttribute("departments", departments);
         model.addAttribute("subReminder", subDto);
         return "createSub";
     }
     @PostMapping("/subscriptions")
-    public String saveSubscription(@ModelAttribute("subReminder") SubDto subDto) throws SchedulerException, InterruptedException {
+    public String saveSubscription(@ModelAttribute("subReminder") SubDto subDto, Model model) throws SchedulerException, InterruptedException {
+        List<Department> departments = subReminderService.getAllDepartment();
+        model.addAttribute("departments", departments);
         subReminderService.createReminder(subDto);
-        return "redirect:/subscriptions";
+        return "redirect:/subscriptionsPage";
     }
-    private void extractedModels(@PathVariable("pageNumber") int pageNumber, Model model, Page<Sub_reminder> page) {
-        List<Sub_reminder> listSubscription = page.getContent();
+    @GetMapping("/admins")
+    public String createUserForm(Model model){
+        //      create User object to hold user form data
+        UserDto userDto = new UserDto();
+        model.addAttribute("user", userDto);
+        return "admin_page";
+    }
+    @PostMapping("/users")
+    public String saveUser(@ModelAttribute("user") UserDto userDto) throws SchedulerException, InterruptedException {
+        subReminderService.createUser(userDto);
+        return "redirect:/subscriptionsPage";
+    }
+    private void extractedModels(@PathVariable("pageNumber") int pageNumber, Model model, Page<SubReminder> page) {
+        List<SubReminder> listSubscription = page.getContent();
 
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -110,7 +134,7 @@ public class SubscriptionController {
         int pageSize = 5;
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
-        Page<Sub_reminder> page = subRepository.getInfo(pageable);
+        Page<SubReminder> page = subRepository.getInfo(pageable);
         extractedModels(pageNumber, model, page);
 
 
@@ -121,7 +145,7 @@ public class SubscriptionController {
         pageSize = 5;
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
-        Page<Sub_reminder> page = subRepository.getActiveInfo(pageable);
+        Page<SubReminder> page = subRepository.getActiveInfo(pageable);
         extractedModels(pageNumber, model, page);
 
         return "activePaginated_index";
@@ -131,7 +155,7 @@ public class SubscriptionController {
         pageSize = 5;
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
-        Page<Sub_reminder> page = subRepository.getPendingInfo(pageable);
+        Page<SubReminder> page = subRepository.getPendingInfo(pageable);
         extractedModels(pageNumber, model, page);
 
         return "pendingPaginated_index";
@@ -141,7 +165,7 @@ public class SubscriptionController {
         pageSize = 5;
 
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
-        Page<Sub_reminder> page = subRepository.getExpiredInfo(pageable);
+        Page<SubReminder> page = subRepository.getExpiredInfo(pageable);
         extractedModels(pageNumber, model, page);
 
         return "overduePaginated_index";

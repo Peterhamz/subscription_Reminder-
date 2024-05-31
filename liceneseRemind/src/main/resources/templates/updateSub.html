@@ -25,7 +25,7 @@
       Effortlessly manage company licenses with timely
       reminders for uninterrupted operations.
     </p>
-    <form th:action="@{/subscriptions/{id} (id=${update.getSubId})}" th:object="${update}" method="POST">
+    <form th:action="@{/subscriptions/{id} (id=${update.getId()})}" th:object="${update}" method="POST">
       <div class="form-group">
         <label for="name" >Name:</label>
         <input type="text"
@@ -46,13 +46,9 @@
                 class="cursor-deselect"
                 required >
           <option value="">Select your Department...</option>
-          <option value="IT">IT</option>
-          <option value="STRATEGY & OPERATIONS">Strategy & Operations</option>
-          <option value="HR & ADMIN">HR & Admin</option>
-          <option value="SUPPLY CHAIN">Supply Chain</option>
-          <option value="TECHNICAL">Technical</option>
-          <option value="FINANCE">Finance</option>
-          <option value="BUSINESS DEVELOPMENT">Business Development</option>
+          <option th:each="department : ${departments}"
+                  th:value="${department.getId()}"
+                  th:text="${department.getDepartment}"></option>
         </select>
       </div>
 
@@ -93,7 +89,7 @@
                   placeholder="Enter description" ></textarea>
       </div>
       <div class="button-hold">
-        <a th:href="@{/subscriptions}" class="button-submit cancel" type="button">Cancel</a>
+        <a th:href="@{/subscriptionsPage}" class="button-submit cancel" type="button">Cancel</a>
         <button class="button-submit submit" type="submit">Save changes</button>
       </div>
 
