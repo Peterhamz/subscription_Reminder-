@@ -22,7 +22,28 @@ public interface SubRepository extends JpaRepository<SubReminder,Long> {
     @Query(value = "SELECT * FROM sub_reminder where status = '2'",nativeQuery = true)
     Page<SubReminder>getExpiredInfo(Pageable pageable);
 
-   // List<Sub_reminder> findAllByStatus(String status);
+    @Query(value = "SELECT sr.* FROM sub_reminder sr JOIN department d ON sr.department_id = d.id WHERE d.department = 'Peter'", nativeQuery = true)
+    Page<SubReminder> getSubscriptionsByITDepartment(Pageable pageable);
+
+    @Query(value = "SELECT sr.* FROM sub_reminder sr JOIN department d ON sr.department_id = d.id WHERE d.department = 'Peter'", nativeQuery = true)
+    Page<SubReminder> getSubscriptionsBySupplyChainDepartment(Pageable pageable);
+
+    @Query(value = "SELECT sr.* FROM sub_reminder sr JOIN department d ON sr.department_id = d.id WHERE d.department = 'Peter'", nativeQuery = true)
+    Page<SubReminder> getSubscriptionsByHRAminDepartment(Pageable pageable);
+
+    @Query(value = "SELECT sr.* FROM sub_reminder sr JOIN department d ON sr.department_id = d.id WHERE d.department = 'Peter'", nativeQuery = true)
+    Page<SubReminder> getSubscriptionsByFinanceDepartment(Pageable pageable);
+
+    @Query(value = "SELECT sr.* FROM sub_reminder sr JOIN department d ON sr.department_id = d.id WHERE d.department = 'Peter'", nativeQuery = true)
+    Page<SubReminder> getSubscriptionsByDepartment(Pageable pageable);
+
+
+    // List<Sub_reminder> findAllByStatus(String status);
 
     long countByStatus (Status status);
+    SubReminder getSubReminderByDepartment_Id(Long ID);
+
+    Page<SubReminder> findByDepartment_Department(String departmentName, Pageable pageable);
+
+
 }

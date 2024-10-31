@@ -4,6 +4,7 @@ import com.structured.liceneseReminder.dto.MailSenderDto;
 import com.structured.liceneseReminder.dto.SubDto;
 import com.structured.liceneseReminder.dto.UserDto;
 import com.structured.liceneseReminder.enums.Status;
+import com.structured.liceneseReminder.exception.ResourceAlreadyExistException;
 import com.structured.liceneseReminder.exception.ResourceNotFoundException;
 import com.structured.liceneseReminder.model.Department;
 import com.structured.liceneseReminder.model.SubReminder;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ public class SubReminderServiceImpl implements SubReminderService {
     private DepartmentRepository departmentRepository;
     @Autowired
     private MailSenderService mailSenderService;
+
 
     @Override
     public SubDto createReminder(SubDto subDto) throws SchedulerException, InterruptedException {
@@ -82,13 +85,13 @@ public class SubReminderServiceImpl implements SubReminderService {
     @Override
     public SubReminder getSubById(Long id) {
       return subRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("The subscription with id: " + id + " was not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("The subscription with " , " id "  , id));
     }
     @Override
     public SubReminder updateSub(Long subId, SubDto updateSubReminder) {
 
         SubReminder subscription = subRepository.findById(subId)
-                .orElseThrow(() -> new ResourceNotFoundException("The subscription with id: " + subId + " was not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("The subscription with",  "id",  subId ));
 
         Optional<Department> getDepartment= departmentRepository.getDepartmentById(subscription.getDepartment().getId());
 
@@ -112,12 +115,24 @@ public class SubReminderServiceImpl implements SubReminderService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
+
         Department department = new Department();
 
-        department.setEmail(userDto.getEmail());
-        department.setDepartment(userDto.getDepartment());
-        departmentRepository.save(department);
-        System.out.println(department.getEmail() + department.getDepartment());
+        Optional<Department> email = departmentRepository
+                .getDepartmentByEmail(userDto.getEmail());
+
+        Optional<Department> departments = departmentRepository
+                .getDepartmentByEmail(userDto.getEmail());
+
+        if(!(email.isPresent() && departments.isPresent())) {
+            department.setEmail(userDto.getEmail());
+            department.setDepartment(userDto.getDepartment());
+            departmentRepository.save(department);
+        }else {
+            throw new ResourceAlreadyExistException("The Details Entered: " + userDto.getEmail() + " Already Exist", " ");
+        }
+
+       // System.out.println(department.getEmail() + department.getDepartment());
         return userDto;
     }
 
@@ -255,6 +270,8 @@ public class SubReminderServiceImpl implements SubReminderService {
         return this.subRepository.findAll(pageable);
     }
 
+
+
     @Override
     public Page<SubReminder> pendingPaginated(int pageNumber, int pageSize) {
         return null;
@@ -268,5 +285,10 @@ public class SubReminderServiceImpl implements SubReminderService {
     public Page<SubReminder> overduePaginated(int pageNumber, int pageSize) {
         return null;
     }
+    @Override
+    public Page<SubReminder> getSubscriptionsByDepartmentName(String departmentName, Pageable pageable) {
+        return subRepository.findByDepartment_Department(departmentName, pageable);
+    }
+
 
 }

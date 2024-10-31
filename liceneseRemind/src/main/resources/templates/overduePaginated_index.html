@@ -52,10 +52,11 @@
                     <tspan x="64.0352" y="25.5" class="license-sidebar">License Reminder</tspan>
                   </text>
         </svg>
-    </div> </a>
+    </div>
+    </a>
     <ul class="actions">
         <li>
-            <a th:href="@{/subscriptionsPage}" class="active">
+            <a th:href="@{/subscriptionsPage}" id="dropdownToggle" class="active">
                 <svg
                         width="24"
                         height="24"
@@ -99,6 +100,15 @@
 
                 Overview
             </a>
+            <!-- Dropdown Menu -->
+            <div id="dropdownMenu" class="dropdown hidden">
+                <ul th:each="department : ${departments}">
+                    <li>
+                        <a th:href="@{'/subscription/by-department?departmentName=' + ${department.department}}"
+                           th:text="${department.department}"></a>
+                    </li>
+                </ul>
+            </div>
         </li>
     </ul>
 </div>
@@ -262,6 +272,30 @@
     </div>
 
 </main>
+<script>
+    // Select the anchor tag and the dropdown menu
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    // Add a click event to toggle the dropdown
+    dropdownToggle.addEventListener('click', function(event) {
+        event.preventDefault();  // Prevent the default anchor behavior
+
+        // Toggle the dropdown visibility
+        if (dropdownMenu.classList.contains('hidden')) {
+            dropdownMenu.classList.remove('hidden');
+        } else {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Optional: Close the dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+</script>
 
 </body>
 </html>

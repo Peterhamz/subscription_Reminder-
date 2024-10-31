@@ -3,6 +3,7 @@ package com.structured.liceneseReminder.controller;
 import com.structured.liceneseReminder.dto.SubDto;
 import com.structured.liceneseReminder.dto.UserDto;
 import com.structured.liceneseReminder.enums.Status;
+import com.structured.liceneseReminder.exception.ResourceAlreadyExistException;
 import com.structured.liceneseReminder.model.Department;
 import com.structured.liceneseReminder.model.SubReminder;
 import com.structured.liceneseReminder.repository.SubRepository;
@@ -25,6 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ControllerAdvice
 public class SubscriptionController {
 
     @Autowired
@@ -68,6 +70,24 @@ public class SubscriptionController {
         model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
         return overduePaginated(1, model);
     }
+    @GetMapping("/subscription/by-department")
+    private String itSubs(@RequestParam("departmentName") String department, Model model) {
+        model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
+        model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
+        model.addAttribute("overdueCount", subRepository.countByStatus(Status.EXPIRED));
+        return getSubscriptionsByDepartment(department,1, model);
+    }
+
+//    @GetMapping("/itPage/{pageNumber}")
+//    public String itSubPaginated(@PathVariable(value = "pageNumber") int pageNumber, Model model){
+//        pageSize = 5;
+//
+//        Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
+//        Page<SubReminder> page = subRepository.getSubscriptionsByITDepartment(pageable);
+//        extractedModels(pageNumber, model, page);
+//
+//        return "itPaginated_index";
+//    }
 
     @GetMapping("/sub/update/{id}")
     public String updateSubscriptionForm(@PathVariable Long id, Model model){
@@ -111,10 +131,22 @@ public class SubscriptionController {
         model.addAttribute("user", userDto);
         return "admin_page";
     }
+
     @PostMapping("/users")
-    public String saveUser(@ModelAttribute("user") UserDto userDto) throws SchedulerException, InterruptedException {
-        subReminderService.createUser(userDto);
-        return "redirect:/subscriptionsPage";
+    public String saveUser(@ModelAttribute("user") UserDto userDto, Model model) throws SchedulerException, InterruptedException {
+        try {
+            subReminderService.createUser(userDto);
+            return "redirect:/subscriptionsPage";
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "error"; // Redirect to the error page if the exception occurs
+        }
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    public String handleResourceAlreadyExistException(ResourceAlreadyExistException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
     }
     private void extractedModels(@PathVariable("pageNumber") int pageNumber, Model model, Page<SubReminder> page) {
         List<SubReminder> listSubscription = page.getContent();
@@ -123,6 +155,8 @@ public class SubscriptionController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("listSubscription", listSubscription);
+        List<Department> departments = subReminderService.getAllDepartment();
+        model.addAttribute("departments", departments);
 
         model.addAttribute("activeCount", subRepository.countByStatus(Status.ACTIVE));
         model.addAttribute("pendingCount", subRepository.countByStatus(Status.PENDING));
@@ -169,5 +203,25 @@ public class SubscriptionController {
         extractedModels(pageNumber, model, page);
 
         return "overduePaginated_index";
+    }
+
+    @GetMapping("/subscriptions/by-department/{pageNumber}")
+    public String getSubscriptionsByDepartment(@RequestParam("departmentName")  String departmentName,
+                                               @PathVariable(value = "pageNumber") int pageNumber, Model model
+                                              ) {
+
+        pageSize = 5;
+
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+        Page<SubReminder> subscriptions = subReminderService.getSubscriptionsByDepartmentName(departmentName, pageable);
+        extractedModels(pageNumber, model, subscriptions);
+
+        List<Department> departments = subReminderService.getAllDepartment();
+
+        model.addAttribute("departments", departments);
+        model.addAttribute("subscriptions", subscriptions.getContent());
+        model.addAttribute("departmentName", departmentName);
+
+        return "byDepartment";
     }
 }

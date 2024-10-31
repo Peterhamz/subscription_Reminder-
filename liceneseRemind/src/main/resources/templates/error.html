@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Page</title>
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Garamond MT Std, Garamond;
+            color: black;
+            background-color: #f68633;
+        }
+        .error-container {
+            text-align: center;
+            padding: 50px;
+            border-radius:8px;
+            margin: 80px auto;
+            border: 2px solid #f68633;
+            width: 40%;
+            box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.25);
+            background-color: white;
+        }
+        .error-message {
+            color: red;
+            font-size:18px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+        .ok-button {
+            width:20%;
+            height:40px;
+            border-radius:10px;
+            text-align:center;
+            color:white;
+            font-size:18px;
+            background-color:#f68633;
+            border:none;
+            margin-top:2rem;
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+        }
+        .ok-button:hover{
+            background-color: #ec6a0a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="error-container">
+    <p class="error-message" > OOPS!!! An Error occurred</p>
+    <p class="error-message" th:text="${errorMessage}"></p>
+    <button class="ok-button" onclick="goBack()">Ok</button>
+</div>
+
+<script>
+    function goBack() {
+        window.location.href = '/admins'; // Redirect to the form page
+    }
+</script>
+
+</body>
+</html>

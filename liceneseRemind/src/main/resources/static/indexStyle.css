@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    font: 400 14px Poppins, Inter;
+    font: 400 14px Garamond MT Std, Garamond;
     text-shadow: 0.3px 0.4px 0.4px rgba(0, 0, 0, 0.3);
     color: black;
     background-color: white;
@@ -33,7 +33,7 @@ button {
 }
 .license-sidebar{
     color: #FFFFFF;
-    font: 600 20px Poppins, sans-serif;
+    font: 600 20px Garamond MT Std, Garamond;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 .logo{
@@ -74,7 +74,7 @@ main {
 }
 nav h1{
     color: #343C6A;
-    font: 600 25px Poppins, sans-serif;
+    font: 600 25px Garamond MT Std, Garamond;
     text-shadow: 0.3px 0.3px 0.3px rgba(0, 0, 0, 0.3);
     text-align:center;
 }
@@ -211,12 +211,12 @@ table {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 table th {
-    font: 600 18px Poppins, sans-serif;
+    font: 600 18px Garamond MT Std, Garamond;
     text-align:center;
 }
 table tr{
     padding:0 10rem 0 4rem;
-    font: 250 12px Poppins, sans-serif;
+    font: 250 12px Garamond MT Std, Garamond;
 }
 table th,
 table td {
@@ -263,7 +263,7 @@ table td:nth-child(7) {
     border: 1px solid #F68633;
     padding: 4px;
     border-radius: 20px;
-    font: 500 13px Poppins Inter;
+    font: 500 13px Garamond MT Std, Garamond;
     text-align: center;
     color: #F68633;
     text-decoration: none;
@@ -274,7 +274,7 @@ table td:nth-child(7) {
     border: 1px solid #1E8842;
     padding: 4px;
     border-radius: 20px;
-    font: 500 13px Poppins Inter;
+    font: 500 13px Garamond MT Std Garamond;
     text-align: center;
     color: #1E8842;
     text-decoration: none;
@@ -286,7 +286,7 @@ table td:nth-child(7) {
     background-color: #FF4040;
     padding: 5px;
     border-radius: 20px;
-    font: 500 13px Poppins Inter;
+    font: 500 13px Garamond MT Std, Garamond;
     text-align: center;
     color: white;
     text-decoration: none;
@@ -324,4 +324,42 @@ table td:nth-child(7) {
 .pagination-container .active:active {
     color:black;
     border-bottom: black 2px solid;
+}
+
+
+/* Hide the dropdown initially */
+.hidden {
+    display: none;
+}
+
+/* Style the dropdown */
+.dropdown {
+    position: absolute;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 86%;
+    padding: 7px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-top: 3px; /* Adjusts distance from anchor tag */
+}
+
+.dropdown ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown ul li {
+    padding: 8px 0;
+}
+
+.dropdown ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.dropdown ul li a:hover {
+    background-color: #f1f1f1;
 }

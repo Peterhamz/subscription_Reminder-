@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    font-family: poppins, serif;
+    font-family: Garamond MT Std, Garamond;
     color: black;
     background-color: white;
 }
@@ -42,7 +42,7 @@ body {
 }
 .column-one-h1{
     color: #f68633;
-    font: 700 30px Poppins, sans-serif;
+    font: 700 30px Garamond MT Std, Garamond;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 .form-div{

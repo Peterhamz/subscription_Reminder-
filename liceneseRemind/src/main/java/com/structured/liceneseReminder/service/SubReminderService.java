@@ -6,6 +6,7 @@ import com.structured.liceneseReminder.model.Department;
 import com.structured.liceneseReminder.model.SubReminder;
 import org.quartz.SchedulerException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -26,4 +27,7 @@ public interface SubReminderService {
     Page<SubReminder> activePaginated(int pageNumber, int pageSize);
 
     Page<SubReminder> overduePaginated(int pageNumber, int pageSize);
+
+    Page<SubReminder> getSubscriptionsByDepartmentName(String departmentName, Pageable pageable);
+
 }

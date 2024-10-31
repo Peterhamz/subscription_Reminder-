@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: Garamond MT Std, Garamond;
     color: black;
     background-color: white;
 }
@@ -31,13 +31,13 @@ body {
 }
 .white-div h2{
     color: #f68633;
-    font: 600 22px Poppins, sans-serif;
+    font: 600 22px Garamond MT Std, Garamond;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
     text-align:center;
 }
 .white-div p{
     text-align:center;
-    font: 300 15px Poppins, sans-serif;
+    font: 300 15px Garamond MT Std, Garamond;
 
 }
 
@@ -92,7 +92,7 @@ body {
     height:2.3rem;
     border:1px solid #79808F;
     border-radius:0.35rem;
-    font: 600 12px Poppins, sans-serif;
+    font: 600 12px Garamond MT Std, Garamond;
     padding: 0px 32px 0px 32px;
     margin-right:0.7rem;
 }

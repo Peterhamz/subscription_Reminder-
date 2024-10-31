@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Pending Subscription</title>
+    <title>Departmental</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
@@ -105,13 +105,9 @@
                 <ul th:each="department : ${departments}">
                     <li>
                         <a th:href="@{'/subscription/by-department?departmentName=' + ${department.department}}"
-                          th:text="${department.department}"></a>
-                      </li>
-
-<!--                    <li>-->
-<!--                        <a th:href="@{/itSubs}">IT</a>-->
-<!--                    </li>-->
-                    </ul>
+                           th:text="${department.department}"></a>
+                    </li>
+                </ul>
             </div>
         </li>
     </ul>
@@ -301,5 +297,8 @@
         }
     });
 </script>
+</body>
+</html>
+
 </body>
 </html>
